@@ -1,0 +1,62 @@
+path : /mnt/HDD/My_projects/is_that_santa/data/
+batch_size : 128
+epochs : 100
+learning_rate : 0.001
+n_classes : 1
+
+architecture:
+  Layer1:
+    LazyConv2d:
+      args : [16, 3]
+    
+    ReLU:
+      inplace : true
+
+    MaxPool2d:
+      args : [2]
+
+  Layer2:
+    LazyConv2d:
+      args : [32, 3]
+
+    ReLU:
+      inplace : true
+    
+    LazyBatchNorm2d:
+      args : []
+    
+    MaxPool2d:
+      args : [2]
+
+  Layer3:
+    LazyConv2d:
+      args : [64, 3]
+
+    ReLU:
+      inplace : true
+
+    MaxPool2d:
+      args: [2]
+
+    Dropout:
+      args : [0.25]
+
+  LinearLayer:
+    Flatten:
+      args : []
+
+    LazyLinear:
+      args : [128]
+      
+    LeakyReLU:
+      inplace : true
+
+    LazyLinear:
+      args : [64]
+      
+    LeakyReLU:
+      inplace : true
+
+    
+
+    

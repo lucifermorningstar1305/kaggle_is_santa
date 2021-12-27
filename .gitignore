@@ -1,0 +1,7 @@
+**/data/
+**/sample_test_imgs/
+**/__pycache__/
+**/lightning_logs/
+**/models/
+**/.vscode/
+
