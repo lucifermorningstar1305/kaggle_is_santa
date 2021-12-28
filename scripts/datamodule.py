@@ -92,7 +92,7 @@ class DataModule(pl.LightningDataModule):
             transforms.Resize((256, 256)),
             # transforms.Grayscale(),
             transforms.ToTensor(),
-            transforms.Normalize((0.0), (1.0))
+            transforms.Normalize((0.0, 0.0, 0.0), (1.0, 1.0, 1.0))
         ])
 
 

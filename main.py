@@ -7,7 +7,7 @@ import sys
 import yaml
 import warnings
 
-from scripts import datamodule, model
+from scripts import datamodule, model, callback
 
 warnings.filterwarnings('ignore')
 
@@ -37,13 +37,20 @@ if __name__ == "__main__":
         # Create the model
         classifier = model.LitClassifier(cfg)
 
+        # Declare the Logger
+        wandb_logger = pl.loggers.WandbLogger(project='is_that_santa')
+
         # Declare the trainer
         trainer = pl.Trainer(
             gpus=AVAIL_GPUS, 
             max_epochs=cfg['epochs'], 
             callbacks = [
                 pl.callbacks.early_stopping.EarlyStopping(monitor='val_loss', patience=5, verbose=True),
-                pl.callbacks.model_checkpoint.ModelCheckpoint(monitor='val_loss', mode='min', dirpath='models/')])
+                pl.callbacks.model_checkpoint.ModelCheckpoint(monitor='val_loss', mode='min', dirpath='models/', filename='best_model'),
+                
+                ],
+                
+            logger=wandb_logger)
 
         # Fit the model
         trainer.fit(classifier, dm)

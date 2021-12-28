@@ -1,4 +1,5 @@
 import torch
+import wandb
 import torch.nn as nn
 import pytorch_lightning as pl
 import torch.nn.functional as F
@@ -78,6 +79,17 @@ class LitClassifier(pl.LightningModule):
         self.log('val_loss', loss, prog_bar=True)
         self.log('val_acc', self.accuracy, prog_bar=True)
 
+
+        # Log Images and it's caption
+        imgs = x.to(device='cpu')
+        labels = y.to(device='cpu').numpy()
+        preds = logits.to(device='cpu').numpy()
+        self.logger.log_image(
+            key="validation", 
+            images = [img for img in imgs], 
+            caption=[f'Pred : {int(pred[0] > 0.5)}, Label : {label[0]}' for pred, label in zip(preds, labels)]
+            )
+
         return loss
 
 
@@ -116,6 +128,7 @@ class LitClassifier(pl.LightningModule):
             logits = self.forward(x)
             pred = int(logits.numpy().squeeze() > 0.5)
             self.log('prediction', pred)
+
             return pred
 
 

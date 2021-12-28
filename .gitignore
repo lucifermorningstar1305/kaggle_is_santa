@@ -4,4 +4,4 @@
 **/lightning_logs/
 **/models/
 **/.vscode/
-
+**/wandb/
